@@ -1,4 +1,5 @@
 (ns cljds.ch1.examples
+  (:refer-clojure :exclude [update])
   (:require [cljds.ch1.data :refer :all]
             [cljds.ch1.stats :refer :all]
             [clojure.string :as str]
@@ -7,7 +8,9 @@
             [incanter.distributions :as d]
             [incanter.stats :as s]
             [incanter.svg :as svg]
-            [me.raynes.fs :as fs]))
+            [me.raynes.fs :as fs])
+  (:refer-clojure :exclude [update])
+)
 
 (defn ex-1-1 []
   (i/col-names (load-data :uk)))
@@ -221,6 +224,13 @@
       (c/histogram :x-label "Russia turnout"
                    :nbins 20)
       (i/view)))
+
+(defn ex-1-301 []
+  (->> (load-data :ru-victors)
+       (i/$where #(not-any? number? [(% "turnout") (% "victors-share")]))
+       (i/$ [:colB :turnout :victors-share])))
+
+
 
 (defn ex-1-31 []
   (->> (load-data :ru-victors)
